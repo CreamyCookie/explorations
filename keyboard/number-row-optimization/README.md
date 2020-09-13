@@ -46,7 +46,7 @@ Now that we got that covered, let's look at finding your best digit arrangement.
 # Optimization
 The [Python script](find_optimal_num_rows.py) I've written uses the previously mentioned digit distribution and several variables one can change to find the optimal arrangements. It does so by going through and rating every single one of the *10! = 3 628 800* permutations. On top of that it also rates the ones you've manually entered.
 
-The most important variable defines how comfortable, easy and fast you find each key to type on (for the left side). It has a default of `[0.55, 0.7, 0.98, 1, 0.8]`
+The most important variable defines how comfortable, easy and fast you find each key to type on (for the left side). It has a default of `[0.55, 0.7, 1, 0.98, 0.8]`
 
 Your values will likely be a lot less extreme if you use a separate layer for numbers with more optimal placements. But even then you might want to put less common digits on your pinkies.
 
