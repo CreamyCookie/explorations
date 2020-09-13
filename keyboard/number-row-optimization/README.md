@@ -69,15 +69,11 @@ Your values will likely be a lot less extreme if you use a separate layer for nu
 | 98045 32167 | (11.18, 11.11) | 22.25 (+37.38% compared to current) |
 
 
-
-
 **Best possible that keeps digits on their current side**
 
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
 | 54123 76089 | (11.70, 10.35) | 21.17 (+30.71% compared to current) |
-
-
 
 
 **Best possible with at most 2 swaps**
