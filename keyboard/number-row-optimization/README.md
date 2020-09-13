@@ -16,37 +16,41 @@ And again, this comes up a lot in all kinds of data (Wikipedia quote):
 
 One intuitive way I can think of for why it's true for numbers is this: A lot of text and code includes something that's akin to numbered lists. Some of these lists will end on 3, some on 701 and some on 41591878, but most of them will start with 0 or 1. Since that's the case but the higher numbers often aren't reached, it leads to 1 being more common than 2, 2 more common than 3, and so on.
 
-To be really sure, I checked three gigantic collections of texts: A selection from project Gutenberg (public domain library of books, 6.4 GiB compressed, plain text only), Wikipedia (5.8 GiB, de, sanitized) and all C files of the Linux kernel. Here you can see the plot: 
+To be really sure, I checked three gigantic collections of texts: A selection from project Gutenberg (public domain library of books, 6.4 GiB compressed, plain text only), Wikipedia (5.8 GiB, de, sanitized) and all C files of the Linux kernel. 
+
+Here you can see the plot: 
 
 ![Plot that shows how the aforementioned data is mostly Zipfian](digit_frequencies.png). 
 
-And indeed, the datasets follow a Zipfian distribution for the most part. Of course, data is almost never free from noise and bias. For example, I think it's likely that the outliers of 8 and 9 in Wikipedia are largely caused by the fact that there's a lot of information about the 19th and 20th century (and less and less, the more you go into the past). It's also not surprising that 0 is a lot more common in code than in texts.
+And indeed, the datasets mostly follow a Zipfian distribution. Of course, data is almost never free from noise and bias. For example, I think it's likely that the outliers of 8 and 9 in Wikipedia are largely caused by the fact that there's a lot of information about the 19th and 20th century (and less and less, the more you go into the past). It's also not surprising that 0 is a lot more common in code than in texts.
 
 So with that we have:
 
 **Premise 1**: You type some number more often than others.
 
-If one also agrees that:
+But we also need the following to get any optimization off the ground:
 
 **Premise 2**: Some key positions are better in terms of comfort, ease, speed, or else
 
-For example, if you agree that the key of 1 is the least comfortable, then the data shows us that the current layout is not optimal. The digit 1 is the most common digit (or second most common, if you program a lot), yet it is in the worst position. I actually didn't realize this before working on this whole (crazy) thing, but I actually use my ring finger to type 1's. That's how bad it is (for me). 
+For example, if you agree that the key of 1 is the least comfortable, then the data shows us that the current layout is not optimal: The digit 1 is the most common digit (or second most common, if you program a lot), yet it is in the worst position. 
 
-Obviously, changing the number row is of no use if it makes your life harder, after you got used to the new arrangement:
+I actually didn't realize this before working on this crazy thing, but I actually use my ring finger to type 1's. That's how bad it is for me.
+
+Obviously, changing the number row is of no use if it makes your life harder (after you got used to the new arrangement):
 
 **Premise 3**: You don't have to switch, or it's easy for you to switch between a new and the traditional layout.
 
-If any of these premises doesn't hold true, then the number row is already optimal for you.
+If any of these premises doesn't hold true for you, then changing the number row provides no benefits.
 
 Now that we got that covered, let's look at finding your best digit arrangement. 
  
 
 # Optimization
-The [Python script](find_optimal_num_rows.py) I've written uses the digit distribution and several variables one can change to find the optimal arrangements. It does so by going through and rating every single one of the *10! = 3 628 800* permutations. On top of that it also rates the ones you've manually entered.
+The [Python script](find_optimal_num_rows.py) I've written uses the previously mentioned digit distribution and several variables one can change to find the optimal arrangements. It does so by going through and rating every single one of the *10! = 3 628 800* permutations. On top of that it also rates the ones you've manually entered.
 
 The most important constant defines how comfortable, easy and fast you find each key to type on. The default is `[0.55, 0.7, 0.98, 1, 0.8]` for the left side.
 
-Your values will be a lot less extreme if you use a separate layer for numbers, but even then you might want to put less common digits on your pinkies.
+Your values will likely be a lot less extreme if you use a separate layer for numbers with more optimal placements. But even then you might want to put less common digits on your pinkies.
 
 
 # Results
@@ -78,7 +82,7 @@ Your values will be a lot less extreme if you use a separate layer for numbers, 
 |-------------|----------------|-------------------------------------|
 | 42315 67098 | (11.31, 10.30) | 20.96 (+29.41% compared to current) |
 
-While I mostly worked on this for fun, I'm actually considering `54321 06789` or `42315 67098` for my next layout.
+While I mostly made this for fun, I'm actually considering `54321 06789` or `42315 67098` for my next layout.
 
 Thank you very much for reading! I hope you found it interesting =)
 
