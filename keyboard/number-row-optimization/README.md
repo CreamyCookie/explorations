@@ -22,7 +22,7 @@ Here you can see the plot:
 
 ![Plot that shows how the aforementioned data is mostly Zipfian](digit_frequencies.png). 
 
-And indeed, the datasets mostly follow a Zipfian distribution. Of course, data is almost never free from noise and bias. For example, I think it's likely that the outliers of 8 and 9 in Wikipedia are largely caused by the fact that there's a lot of information about the 19th and 20th century (and less and less, the more you go into the past). It's also not surprising that 0 is a lot more common in code than in texts.
+And indeed, the datasets mostly follow a Zipfian distribution. Of course, data is almost never free from noise and bias. For example, I think it's likely that the outliers of 8 and 9 in Wikipedia are largely caused by the fact that there's a lot of information about the 19th and 20th century (and less and less, the more you go into the past). It's also not surprising that 0 is a lot more common in code than in texts, given that indexes and counters usually start with 0.
 
 So with that we have:
 
@@ -32,9 +32,7 @@ But we also need the following to get any optimization off the ground:
 
 **Premise 2**: Some key positions are better in terms of comfort, ease, speed, or else
 
-For example, if you agree that the key of 1 is the least comfortable, then the data shows us that the current layout is not optimal: The digit 1 is the most common digit (or second most common, if you program a lot), yet it is in the worst position. 
-
-I actually didn't realize this before working on this crazy thing, but I actually use my ring finger to type 1's. That's how bad it is for me.
+For example, if you agree that the key of 1 is the least comfortable, then the data shows us that the current layout is not optimal: The digit 1 is the most common digit (or second most common, if you program a lot), yet it is in the worst position. I actually didn't realize this before working on this crazy thing, but I actually use my ring finger to type 1's. That's how bad it is for me.
 
 Obviously, changing the number row is of no use if it makes your life harder (after you got used to the new arrangement):
 
@@ -48,7 +46,9 @@ Now that we got that covered, let's look at finding your best digit arrangement.
 # Optimization
 The [Python script](find_optimal_num_rows.py) I've written uses the previously mentioned digit distribution and several variables one can change to find the optimal arrangements. It does so by going through and rating every single one of the *10! = 3 628 800* permutations. On top of that it also rates the ones you've manually entered.
 
-The most important constant defines how comfortable, easy and fast you find each key to type on. The default is `[0.55, 0.7, 0.98, 1, 0.8]` for the left side.
+The most important constant defines how comfortable, easy and fast you find each key to type on. 
+
+The default is `[0.55, 0.7, 0.98, 1, 0.8]` for the left side.
 
 Your values will likely be a lot less extreme if you use a separate layer for numbers with more optimal placements. But even then you might want to put less common digits on your pinkies.
 
