@@ -26,7 +26,7 @@ And indeed, the datasets mostly follow a Zipfian distribution. Of course, data i
 
 So with that we have:
 
-**Premise 1**: You type some number more often than others.
+**Premise 1**: You type some numbers more often than others.
 
 But we also need the following to get any optimization off the ground:
 

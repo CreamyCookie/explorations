@@ -3,12 +3,12 @@ from string import digits
 
 
 # if this is 0, balance between left and right hand keys is ignored
-# if this is 1 the rating equals the minimum 'value' of both sides
+# if this is 1 the rating equals the smallest 'value' of both sides
 BALANCE_FACTOR = 0.65
 
-# Tracks how comfortable and quick each key is to press (from pinky to the
-# (both index finger rows). Even if all keys are in the home row, you might
-# still want to give your pinky less work and thus a lower value.
+# Tracks how comfortable and quick each key is to press (from pinky to the two
+# index finger rows). Even if all keys are in the home row, you might still
+# want to give your pinky less work and thus a lower value.
 LEFT_KEYS_POSITION_RATING = [0.55, 0.7, 1, 0.98, 0.8]
 
 CURRENT = '12345 67890'
@@ -33,9 +33,9 @@ NUM_FMT = '.2f'
 # How Zipfian do we want the distribution to be.
 # The closer this is to zero, the more we will modify the frequency value of 0
 # to fit with the real world data from Wikipedia and Gutenberg.
-# increase (to up to 1) if you want to optimize for programming
+# Increase (to up to 1) if you want to optimize for programming.
 # If USE_REAL_WORLD_AVERAGE is set true, we will instead smooth between the
-# Zipfian and the real world distribution.
+# Zipfian and the real world distribution using this value.
 ZIPF_FACTOR = 0.7
 
 # ratio for zero from real world data (wiki + gutenberg)
