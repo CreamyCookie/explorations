@@ -2,33 +2,14 @@ from itertools import permutations
 from string import digits
 
 
-# if this is 0, balance between left and right hand keys is ignored
-# if this is 1 the rating equals the smallest 'value' of both sides
-BALANCE_FACTOR = 0.65
-
 # Tracks how comfortable and quick each key is to press (from pinky to the two
 # index finger rows). Even if all keys are in the home row, you might still
 # want to give your pinky less work and thus a lower value.
 LEFT_KEYS_POSITION_RATING = [0.55, 0.7, 1, 0.98, 0.8]
 
-CURRENT = '12345 67890'
-
-# @formatter:off
-MANUAL_DIGIT_PERMUTATIONS = [
-    CURRENT,
-
-    # switch 1 with 4 and 7 with 0 - pretty unintuitive change, but only 4 keys
-    # to relearn and numbers stay on their side
-    '42315 60897',
-
-    # reverse left half and move 0 to before 6
-    # relative simple change that's easy to remember and keeps numbers on their
-    # side but muscle memory for every number but 3 needs to be retrained
-    '54321 06789',
-]
-# @formatter:on
-
-NUM_FMT = '.2f'
+# if this is 0, balance between left and right hand keys is ignored
+# if this is 1 the rating equals the smallest 'value' of both sides
+BALANCE_FACTOR = 0.65
 
 # How Zipfian do we want the distribution to be.
 # The closer this is to zero, the more we will modify the frequency value of 0
@@ -42,13 +23,37 @@ ZIPF_FACTOR = 0.7
 # if this was 0.5 it would imply half of all digits are zero
 RW_0_VALUE = 0.134418127182388
 
-# I'd recommend against enabling this, as Wikipedia and Gutenberg both are 
+# I'd recommend against enabling this, as Wikipedia and Gutenberg both are
 # biased by, among others, how much data there is for certain years (1800-1999)
 # Similarly, I'd leave the ZIPF_FACTOR relatively high, unless you don't code.
 USE_REAL_WORLD_AVERAGE = False
 
+CURRENT = '12345 67890'
+LEFT = CURRENT[:5]
+
+# @formatter:off
+MANUAL_DIGIT_PERMUTATIONS = [
+    CURRENT,
+    # left side: rotate right twice, right side: move 0 in the middle
+    '45123 67089',
+
+    # reverse left half and move 0 to before 6
+    # relative simple change that's easy to remember and keeps numbers on their
+    # side but muscle memory for every number but 3 needs to be retrained
+    '54321 06789',
+
+    # switch 1 with 4 and 7 with 0 - pretty unintuitive change, but only 4 keys
+    # to relearn and numbers stay on their side
+    '42315 60897',
+]
+# @formatter:on
+
+MAX_PERMUTATIONS_COUNT = 10
+
 # to find the best arrangement with at most this many swaps
 MAX_N_SWAPS = 2
+
+NUM_FMT = '.2f'
 
 # -----------------------------------------------------------------------------
 
@@ -210,19 +215,21 @@ def count_swaps(arrangement, current=CURRENT):
 # -----------------------------------------------------------------------------
 
 
-print_header("Ratings of entered permutations")
+print_header("Entered permutations")
 print_column_header()
 for ds in MANUAL_DIGIT_PERMUTATIONS:
     print_perm_with_rating(ds)
 
-max_list_count = 10
-max_list = [('', 0) for _ in range(max_list_count)]
+max_permutations = [('', 0) for _ in range(MAX_PERMUTATIONS_COUNT)]
 
-max_keep_sides = None
-max_rating_keep_sides = 0
+max_keep_sides_perm = None
+max_keep_sides_perm_rating = 0
 
-max_only_n_swaps = None
-max_rating_only_n_swaps = 0
+max_only_n_swaps_perm = None
+max_only_n_swaps_perm_rating = 0
+
+min_perm = None
+min_perm_rating = float("inf")
 
 # 10! = 3628800 - will take a bit (could be optimized if sides are mirrored)
 for p in permutations(digits):
@@ -231,34 +238,42 @@ for p in permutations(digits):
 
     rating = value_per_side_and_rating(p)[2]
 
-    if rating > max_rating_only_n_swaps and count_swaps(p) <= MAX_N_SWAPS:
-        max_rating_only_n_swaps = rating
-        max_only_n_swaps = p
+    if rating < min_perm_rating:
+        min_perm_rating = rating
+        min_perm = p
 
-    if rating > max_rating_keep_sides and all(d in p[:5] for d in '12345'):
-        max_rating_keep_sides = rating
-        max_keep_sides = p
+    if rating > max_only_n_swaps_perm_rating and count_swaps(p) <= MAX_N_SWAPS:
+        max_only_n_swaps_perm_rating = rating
+        max_only_n_swaps_perm = p
 
-    for i in range(max_list_count):
-        cur = max_list[i]
+    if rating > max_keep_sides_perm_rating and all(d in p[:5] for d in LEFT):
+        max_keep_sides_perm_rating = rating
+        max_keep_sides_perm = p
+
+    for i in range(MAX_PERMUTATIONS_COUNT):
+        cur = max_permutations[i]
 
         if cur[1] < rating:
-            max_list[i] = (p, rating)
+            max_permutations[i] = (p, rating)
             break
 
-print_header("Ratings of best possible permutations")
+print_header("Worst permutation")
+print_perm_with_rating(min_perm)
+
+print_header("Best permutations")
 print_column_header()
-for s, rating in max_list:
+for s, rating in max_permutations:
     print_perm_with_rating(s)
 
 print()
 print()
-print("Best possible that keeps digits on their current side:")
-print_perm_with_rating(max_keep_sides)
+print("Best where digits stay on their current side:")
+print_perm_with_rating(max_keep_sides_perm)
 
 print()
-print(f"Best possible with at most {MAX_N_SWAPS} swaps:")
-print_perm_with_rating(max_only_n_swaps)
+print(f"Best with at most {MAX_N_SWAPS} swaps:")
+print_perm_with_rating(max_only_n_swaps_perm)
 
-how_swap = ", ".join(f'{a} with {b}' for a, b in get_swaps(max_only_n_swaps))
+how_swap = ", ".join(
+        f'{a} with {b}' for a, b in get_swaps(max_only_n_swaps_perm))
 print(" -- " + how_swap)

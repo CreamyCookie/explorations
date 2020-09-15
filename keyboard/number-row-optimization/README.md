@@ -6,7 +6,7 @@
 
 What's there to optimize? Ignoring some special cases, aren't all 10 digits used approximately equally?
 
-It turns out no. A lot of real world data has a [Zipfian distribution](https://en.wikipedia.org/wiki/Zipf%27s_law), which means the frequency of any X is inversely proportional to its rank in the frequency table. For example, in texts, the most frequent word will occur approximately twice as often as the second most frequent word, three times as often as the third most frequent word, and so on. ("the" is the most common word with about 7%, while the second most common "of" has 3.5%)
+Surprisingly to me, no. A lot of real world data has a [Zipfian distribution](https://en.wikipedia.org/wiki/Zipf%27s_law), which means the frequency of any X is inversely proportional to its rank in the frequency table. For example, in texts, the most frequent word will occur approximately twice as often as the second most frequent word, three times as often as the third most frequent word, and so on. ("the" is the most common word with about 7%, while the second most common "of" has 3.5%)
 
 And again, this comes up a lot in all kinds of data (Wikipedia quote):
 
@@ -20,7 +20,7 @@ To be sure, I [checked three gigantic collections of texts](corpus_count.py): A 
 
 Here you can see the plot: 
 
-![Plot that shows how the aforementioned data is mostly Zipfian](digit_frequencies.png). 
+![Plot that shows how the aforementioned data is mostly Zipfian](digit_frequencies.png)
 
 And indeed, the datasets mostly follow a Zipfian distribution. Of course, data is almost never free from noise and bias. For example, I think it's likely that the outliers of 8 and 9 in Wikipedia are largely caused by the fact that there's a lot of information about the 19th and 20th century (and less and less, the more you go into the past). It's also not surprising that 0 is a lot more common in code than in texts, given that indexes and counters usually start with 0.
 
@@ -52,15 +52,16 @@ Your values will likely be a lot less extreme if you use a separate layer for nu
 
 
 # Results
-## Ratings of entered permutations
+## Entered permutations
 
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
 | 12345 67890 | (10.11, 7.67)  | 16.19 (current)                     |
-| 42315 60897 | (11.31, 10.13) | 20.67 (+27.65% compared to current) |
+| 45123 67089 | (11.65, 10.32) | 21.10 (+30.30% compared to current) |
 | 54321 06789 | (11.23, 9.20)  | 19.12 (+18.05% compared to current) |
+| 42315 60897 | (11.31, 10.13) | 20.67 (+27.65% compared to current) |
     
-## Ratings of best possible permutations
+## Best permutations
    
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
@@ -69,18 +70,24 @@ Your values will likely be a lot less extreme if you use a separate layer for nu
 | 98045 32167 | (11.18, 11.11) | 22.25 (+37.38% compared to current) |
 
 
-**Best possible that keeps digits on their current side**
+**Best where digits stay on their current side**
 
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
 | 54123 76089 | (11.70, 10.35) | 21.17 (+30.71% compared to current) |
 
 
-**Best possible with at most 2 swaps**
+**Best with at most two swaps**
 
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
 | 42315 67098 | (11.31, 10.30) | 20.96 (+29.41% compared to current) |
+
+Here's the worst permutation for comparison:
+
+| arrangement | rating / side  | rating                              |
+|-------------|----------------|-------------------------------------|
+| 01432 78965 | (13.65, 4.65)  | 12.46 (-23.08% compared to current) |
 
 While I mostly made this for fun, I'm actually considering `54321 06789` or `42315 67098` for my next layout.
 
