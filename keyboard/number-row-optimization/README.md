@@ -70,20 +70,20 @@ Your values will likely be a lot less extreme if you use a separate layer for nu
 | 98045 32167 | (11.18, 11.11) | 22.25 (+37.38% compared to current) |
 
 
-**Best where digits stay on their current side**
+Best where digits stay on their current side:
 
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
 | 54123 76089 | (11.70, 10.35) | 21.17 (+30.71% compared to current) |
 
 
-**Best with at most two swaps**
+Best with at most two swaps:
 
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
 | 42315 67098 | (11.31, 10.30) | 20.96 (+29.41% compared to current) |
 
-Here's the worst permutation for comparison:
+And here's the worst permutation for comparison:
 
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
