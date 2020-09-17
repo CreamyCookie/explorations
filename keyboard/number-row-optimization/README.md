@@ -22,7 +22,7 @@ Here you can see the plot:
 
 ![Plot that shows how the aforementioned data is mostly Zipfian](digit_frequencies.png)
 
-And indeed, the datasets mostly follow a Zipfian distribution. Of course, data is almost never free from noise and bias. For example, I think it's likely that the outliers of 8 and 9 in Wikipedia are largely caused by the fact that there's a lot of information about the 19th and 20th century (and less and less, the more you go into the past). It's also not surprising that 0 is a lot more common in code than in texts, given that indexes and counters usually start with 0.
+And indeed, the datasets mostly follow a Zipfian distribution. Of course, data is almost never free from noise and bias. For example, I think it's likely that the outliers of 8 and 9 in Wikipedia are largely caused by the fact that there's a lot of information about the 19th and 20th century (and less and less, the more you go into the past). It's also not surprising that 0 is a lot more common in code than in texts, given that indexes and counters usually start with 0. But it means that we need to handle 0 separately, as the Zipfian frequency for 0 does not seem to apply in non-programming areas.
 
 So with that we have:
 
@@ -32,7 +32,7 @@ But we also need the following to get any optimization off the ground:
 
 **Premise 2**: Some key positions are better in terms of comfort, ease, speed, or else
 
-For example, if you agree that the key of 1 is the least comfortable, then the data shows us that the current layout (`12345 67890`) is not optimal: The digit 1 is the most common digit (or second most common, if you program a lot), yet it is in the worst position. I actually didn't realize this before working on this thing, but I actually use my ring finger to type 1's. That's how bad it is for me.
+For example, if you agree that the key that's currently used for 1 is the least comfortable, then the data shows us that the current layout (`12345 67890`) is not optimal: The digit 1 is the most common digit (or second most common, if you program a lot), yet it is in the worst position. I actually didn't realize this before working on this thing, but I actually use my ring finger to type 1's. That's how bad it is for me.
 
 Obviously, changing the number row is of no use if it makes your life harder (after you got used to the new arrangement):
 
@@ -52,47 +52,47 @@ Your values will likely be a lot less extreme if you use a separate layer for nu
 
 
 # Results
-## Entered permutations
-
+## Current layout
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
-| 12345 67890 | (10.11, 7.67)  | 16.19 (current)                     |
-| 45123 67089 | (11.65, 10.32) | 21.10 (+30.30% compared to current) |
-| 54321 06789 | (11.23, 9.20)  | 19.12 (+18.05% compared to current) |
-| 42315 60897 | (11.31, 10.13) | 20.67 (+27.65% compared to current) |
-    
+| 12345 67890 | (10.59, 7.42)  | 16.33 (current)                     |
+
+## Worst permutation
+| arrangement | rating / side  | rating                              |
+|-------------|----------------|-------------------------------------|
+| 02431 68975 | (13.68, 4.81)  | 11.47 (-29.77% compared to current) |
+
 ## Best permutations
-   
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
-| 95123 64078 | (11.14, 11.15) | 22.28 (+37.59% compared to current) |
-| 95123 74068 | (11.14, 11.13) | 22.27 (+37.49% compared to current) |
-| 98045 32167 | (11.18, 11.11) | 22.25 (+37.38% compared to current) |
+| 84126 73059 | (11.00, 11.25) | 22.20 (+35.97% compared to current) |
+| 84216 73059 | (10.97, 11.25) | 22.17 (+35.77% compared to current) |
+| 86124 73059 | (10.96, 11.25) | 22.16 (+35.70% compared to current) |
+| 86214 73059 | (10.92, 11.25) | 22.12 (+35.51% compared to current) |
+| 87036 52149 | (11.12, 11.11) | 22.11 (+35.41% compared to current) |
 
-
-Best where digits stay on their current side:
-
+## Best where digits stay on their current side
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
-| 54123 76089 | (11.70, 10.35) | 21.17 (+30.71% compared to current) |
+| 53124 86079 | (12.07, 9.84)  | 19.86 (+21.63% compared to current) |
 
-
-Best with at most two swaps:
-
+## Best with at most two swaps
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
-| 42315 67098 | (11.31, 10.30) | 20.96 (+29.41% compared to current) |
+| 17345 62098 | (9.00, 11.71)  | 20.10 (+23.08% compared to current) |
 
-And here's the worst permutation for comparison:
-
+## Manually entered
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
-| 01432 78965 | (13.65, 4.65)  | 12.46 (-23.08% compared to current) |
+| 45123 67089 | (11.95, 9.78)  | 19.70 (+20.67% compared to current) |
+| 54321 06789 | (11.36, 8.41)  | 17.92 (+9.78% compared to current)  |
+| 42315 60897 | (11.82, 9.59)  | 19.42 (+18.92% compared to current) |
 
-While I mostly made this for fun, I'm actually considering `54321 06789` or `42315 67098` for my next layout.
+---
+
+So, there you have it. While I mostly made this for fun, I'm considering to use one of these for my next layout.
 
 Thank you very much for reading! I hope you found it interesting =)
-
 
 ---
 

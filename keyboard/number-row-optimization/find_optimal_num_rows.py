@@ -11,7 +11,7 @@ LEFT_KEYS_POSITION_RATING = [0.55, 0.8, 1, 0.98, 0.72]
 # If this is 0, balance between left and right hand keys is ignored.
 # If this is 1, the final rating will be 0 if all the digits with the highest
 # frequency are on the same side.
-IMBALANCE_PENALTY_FACTOR = 0.45
+IMBALANCE_PENALTY_FACTOR = 0.38
 
 # How Zipfian do we want the distribution to be.
 # The closer this is to zero, the more we will modify the frequency value of 0
@@ -27,7 +27,7 @@ RW_0_FREQ = 0.134418127182388
 
 # I'd recommend against enabling this, as Wikipedia and Gutenberg both are
 # biased by, among others, how much data there is for certain years (1800-1999)
-# Similarly, I'd leave the ZIPF_FACTOR relatively high, unless you don't code.
+# Similarly, I'd leave the ZIPF_FACTOR > 0.5 if you code regularly.
 USE_REAL_WORLD_AVERAGE = False
 
 CURRENT = '12345 67890'
@@ -231,6 +231,7 @@ def count_swaps(arrangement, target=CURRENT):
             n += 1
         else:
             swaps += 1
+            # move current character to it's target place
             arr[cn], arr[n] = arr[n], arr[cn]
 
     return swaps
