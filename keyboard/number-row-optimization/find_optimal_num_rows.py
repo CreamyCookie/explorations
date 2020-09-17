@@ -1,15 +1,61 @@
+import sys
 from itertools import permutations
 from string import digits
 
+"""
+
+
+Entered permutations
+--------------------
+| arrangement | rating / side  | rating                              |
+|-------------|----------------|-------------------------------------|
+| 12345 67890 | (10.59, 7.42)  | 16.02 (current) | 
+| 45123 67089 | (11.95, 9.78)  | 19.33 (+20.67% compared to current) |
+| 54321 06789 | (11.36, 8.41)  | 17.58 (+9.78% compared to current) |
+| 42315 60897 | (11.82, 9.59)  | 19.05 (+18.92% compared to current) |
+
+
+Worst permutation
+-----------------
+| arrangement | rating / side  | rating                              |
+|-------------|----------------|-------------------------------------|
+| 02431 68975 | (13.68, 4.81)  | 10.17 (-36.49% compared to current) |
+
+
+Best permutations
+-----------------
+| arrangement | rating / side  | rating                              |
+|-------------|----------------|-------------------------------------|
+| 84126 73059 | (11.00, 11.25) | 22.19 (+38.54% compared to current) |
+| 95037 62148 | (11.25, 11.00) | 22.19 (+38.54% compared to current) |
+| 95037 61248 | (11.25, 10.97) | 22.16 (+38.34% compared to current) |
+| 97035 62148 | (11.22, 11.00) | 22.16 (+38.34% compared to current) |
+| 95037 82146 | (11.25, 10.95) | 22.14 (+38.22% compared to current) |
+
+
+Best where digits stay on their current side:
+| arrangement | rating / side  | rating                              |
+|-------------|----------------|-------------------------------------|
+| 53124 86079 | (12.07, 9.84)  | 19.48 (+21.63% compared to current) |
+
+Best with at most 2 swaps (2 with 7, 8 with 0):
+| arrangement | rating / side  | rating                              |
+|-------------|----------------|-------------------------------------|
+| 17345 62098 | (9.00, 11.71)  | 19.98 (+24.77% compared to current) |
+ 
+
+
+"""
 
 # Tracks how comfortable and quick each key is to press (from pinky to the two
 # index finger rows). Even if all keys are in the home row, you might still
 # want to give your pinky less work and thus a lower value.
 LEFT_KEYS_POSITION_RATING = [0.55, 0.8, 1, 0.98, 0.72]
 
-# if this is 0, balance between left and right hand keys is ignored
-# if this is 1 the rating equals the smallest 'value' of both sides
-BALANCE_FACTOR = 0.65
+# If this is 0, balance between left and right hand keys is ignored.
+# If this is 1, the final rating will be 0 if all the digits with the highest
+# frequency are on the same side.
+IMBALANCE_PENALTY_FACTOR = 0.45
 
 # How Zipfian do we want the distribution to be.
 # The closer this is to zero, the more we will modify the frequency value of 0
@@ -17,11 +63,11 @@ BALANCE_FACTOR = 0.65
 # Increase (to up to 1) if you want to optimize for programming.
 # If USE_REAL_WORLD_AVERAGE is set true, we will instead smooth between the
 # Zipfian and the real world distribution using this value.
-ZIPF_FACTOR = 0.7
+ZIPF_FACTOR = 0.6
 
-# ratio for zero from real world data (wiki + gutenberg)
-# if this was 0.5 it would imply half of all digits are zero
-RW_0_VALUE = 0.134418127182388
+# frequency for zero from real world data (wiki + gutenberg)
+# If this was 0.5 it would imply half of all digits are zero.
+RW_0_FREQ = 0.134418127182388
 
 # I'd recommend against enabling this, as Wikipedia and Gutenberg both are
 # biased by, among others, how much data there is for certain years (1800-1999)
@@ -90,7 +136,7 @@ if USE_REAL_WORLD_AVERAGE:
         digit_frequency[d] = ZIPF_FACTOR * cf + (1 - ZIPF_FACTOR) * f
 else:
     d0 = digit_frequency['0']
-    digit_frequency['0'] = ZIPF_FACTOR * d0 + (1 - ZIPF_FACTOR) * RW_0_VALUE
+    digit_frequency['0'] = ZIPF_FACTOR * d0 + (1 - ZIPF_FACTOR) * RW_0_FREQ
 
 print(f'\nused digit frequency: {digit_frequency}')
 
@@ -99,30 +145,47 @@ s = sum(digit_frequency.values())
 for d, freq in digit_frequency.items():
     digit_frequency[d] = freq / s
 
-print(f'\nused digit_frequency (normalized): {digit_frequency}')
+print(f'\nused digit frequency (normalized): {digit_frequency}')
 
 # We normalize to a total of 100
 s = sum(LEFT_KEYS_POSITION_RATING) / 100
 LEFT_KEYS_POSITION_RATING = [i / s for i in LEFT_KEYS_POSITION_RATING]
 
-
-def value_per_side_and_rating(perm: str):
-    av, bv = value_per_side(perm)
-
-    # simple measure for how good this number arrangement is
-    rating = (av + bv) - abs(av - bv) * BALANCE_FACTOR
-
-    return av, bv, rating
+dfs = sorted(digit_frequency.values())
+max_frequency_delta_between_sides = sum(dfs[5:]) / 5 - sum(dfs[:5]) / 5
 
 
-def value_per_side(perm: str):
-    a, b = perm.split()
-    return value_for_left_side(a), value_for_left_side(b[::-1])
+def rating_per_side_and_total(perm):
+    """
+    Returns a tuple containing left value, right value and rating, which is a
+    simple measure for how good this number arrangement is.
+    """
+    left, right = rating_per_side(perm)
+    total = left + right
+
+    laf, raf = average_frequency_per_side(perm)
+    norm_frequency_delta = abs(laf - raf) / max_frequency_delta_between_sides
+    imbalance_penalty = total * norm_frequency_delta * IMBALANCE_PENALTY_FACTOR
+
+    return left, right, total - imbalance_penalty
 
 
-def value_for_left_side(perm: str):
-    # value depends on how often digit appears and which key position
-    # keys easier, faster, more comfortable to hit = more valuable
+def average_frequency_per_side(perm):
+    left, right = perm.split()
+    return average_frequency_of_side(left), average_frequency_of_side(right)
+
+
+def average_frequency_of_side(perm):
+    return sum(digit_frequency[d] for d in perm) / 5
+
+
+def rating_per_side(perm):
+    left, right = perm.split()
+    return rating_for_left_side(left), rating_for_left_side(right[::-1])
+
+
+def rating_for_left_side(perm):
+    # value depends on how often a digit appears and which key position
     return sum(LEFT_KEYS_POSITION_RATING[pos] * digit_frequency[d]  #
                for pos, d in enumerate(perm))
 
@@ -136,22 +199,22 @@ def print_columns(perm, balance, rating):
     print(f"{perm:<14}{balance:<16}{rating:<16}")
 
 
-current_rating = value_per_side_and_rating(CURRENT)[2]
+current_rating = rating_per_side_and_total(CURRENT)[2]
 
 
-def print_perm_with_rating(s: str, fmt=NUM_FMT):
-    av, bv, rating = value_per_side_and_rating(s)
+def print_perm_with_rating(perm, fmt=NUM_FMT):
+    av, bv, rating = rating_per_side_and_total(perm)
     improvement_percentage = 100 * ((rating / current_rating) - 1)
     increase = ''
     if improvement_percentage != 0:
         increase = f' ({improvement_percentage:+{fmt}}% compared to current)'
-    if s == CURRENT:
+    if perm == CURRENT:
         increase = ' (current)'
 
     balance = f"({av:{fmt}}, {bv:{fmt}})"
     rating_text = f"{rating:{fmt}}{increase}"
 
-    print_columns(s, balance, rating_text)
+    print_columns(perm, balance, rating_text)
 
 
 def print_header(text):
@@ -244,7 +307,7 @@ for p in permutations(digits):
     p = ''.join(p)
     p = p[:5] + ' ' + p[5:]
 
-    rating = value_per_side_and_rating(p)[2]
+    rating = rating_per_side_and_total(p)[2]
 
     if rating < min_perm_rating:
         min_perm_rating = rating
@@ -266,6 +329,7 @@ for p in permutations(digits):
             break
 
 print_header("Worst permutation")
+print_column_header()
 print_perm_with_rating(min_perm)
 
 print_header("Best permutations")
