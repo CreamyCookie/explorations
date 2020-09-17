@@ -81,6 +81,8 @@ Your values will likely be a lot less extreme if you use a separate layer for nu
 |-------------|----------------|-------------------------------------|
 | 17345 62098 | (9.00, 11.71)  | 20.10 (+23.08% compared to current) |
 
+(swap 2 with 7 and 8 with 0)
+
 ## Manually entered
 | arrangement | rating / side  | rating                              |
 |-------------|----------------|-------------------------------------|
@@ -95,6 +97,6 @@ So, there you have it. While I mostly made this for fun, I'm considering to use 
 
 ---
 
-**TLDR**: Use `54123 76089` if you want numbers to stay on their side. Use `95123 64078` if you don't. Use `54321 06789` if you want an easy to remember change (reverse left side, move 0 right to 1). Use `42315 67098` if you only want to swap two digits (1 with 4 and 8 with 0) and still get about 3/4 of the maximum benefits.
+**TLDR**: Use `53124 86079` if you want numbers to stay on their side. Use `84126 73059` if you don't. Use `54321 06789` if you want an easy to remember change (reverse left side, move 0 right to 1). Use `17345 62098` if you only want to swap two digits (2 with 7 and 8 with 0) and still get about two thirds of the maximum benefits.
 
-Of course, the best number arrangement will depend on your preferences and what you do most on your computer. So, if you're going for the best possible result, you probably need to modify a few of the parameters and run the script yourself. (If you don't have Python, you can run the script here: https://repl.it/languages/python3)
+Of course, the best number arrangement will depend on your preferences and what you do most on your computer. So, if you're going for the best possible result, you probably need to modify a few of the parameters and run the script yourself.
