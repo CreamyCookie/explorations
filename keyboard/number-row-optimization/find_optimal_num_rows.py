@@ -48,6 +48,8 @@ MANUAL_DIGIT_PERMUTATIONS = [
 ]
 # @formatter:on
 
+CHECK_ALL_PERMUTATIONS = True
+
 MAX_PERMUTATIONS_COUNT = 10
 
 # to find the best arrangement with at most this many swaps
@@ -219,6 +221,9 @@ print_header("Entered permutations")
 print_column_header()
 for ds in MANUAL_DIGIT_PERMUTATIONS:
     print_perm_with_rating(ds)
+
+if not CHECK_ALL_PERMUTATIONS:
+    sys.exit()
 
 max_permutations = [('', 0) for _ in range(MAX_PERMUTATIONS_COUNT)]
 
