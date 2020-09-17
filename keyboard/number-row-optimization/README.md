@@ -88,11 +88,10 @@ Your values will likely be a lot less extreme if you use a separate layer for nu
 | 54321 06789 | (11.36, 8.41)  | 17.92 (+9.78% compared to current)  |
 | 42315 60897 | (11.82, 9.59)  | 19.42 (+18.92% compared to current) |
 
----
 
 So, there you have it. While I mostly made this for fun, I'm considering to use one of these for my next layout.
 
-Thank you very much for reading! I hope you found it interesting =)
+**Thank you very much for reading!**
 
 ---
 
