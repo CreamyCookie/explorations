@@ -163,11 +163,12 @@ def get_swaps(a, target=CURRENT):
     if len(a) != len_target:
         raise ValueError("both arguments must have the same length")
 
+    char_to_current_index = {c: n for n, c in enumerate(target)}
     swaps = []
     n = 0
     arr = list(a)
-    while n < len_target:
-        cn = target.index(arr[n])
+    while n < len_target - 1:
+        cn = char_to_current_index[arr[n]]
         if cn == n:
             n += 1
         else:
@@ -176,7 +177,7 @@ def get_swaps(a, target=CURRENT):
     return swaps
 
 
-def count_swaps(arrangement, current=CURRENT):
+def count_swaps(arrangement, target=CURRENT):
     """
     >>> current = "12345 67890"
     >>> count_swaps(current, current)
@@ -196,15 +197,17 @@ def count_swaps(arrangement, current=CURRENT):
     >>> count_swaps("82315 67094", current)  # 1 with 4, 0 with 8, 8 with 4
     3
     """
-    len_current = len(current)
+    len_current = len(target)
     if len(arrangement) != len_current:
         raise ValueError("both arguments must have the same length")
+
+    char_to_current_index = {c: n for n, c in enumerate(target)}
 
     swaps = 0
     n = 0
     arr = list(arrangement)
-    while n < len_current:
-        cn = current.index(arr[n])
+    while n < len_current - 1:
+        cn = char_to_current_index[arr[n]]
         if cn == n:
             n += 1
         else:
