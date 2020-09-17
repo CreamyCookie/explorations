@@ -35,9 +35,11 @@ LEFT = CURRENT[:5]
 
 # @formatter:off
 MANUAL_DIGIT_PERMUTATIONS = [
-    CURRENT,
     # left side: rotate right twice, right side: move 0 in the middle
     '45123 67089',
+
+    # left side: reverse left and move 5 to end, right side: rotate right twice
+    #'43215 90678',
 
     # reverse left half and move 0 to before 6
     # relative simple change that's easy to remember and keeps numbers on their
@@ -113,8 +115,8 @@ max_frequency_delta_between_sides = sum(dfs[5:]) / 5 - sum(dfs[:5]) / 5
 
 def rating_per_side_and_total(perm):
     """
-    Returns a tuple containing left value, right value and rating, which is a
-    simple measure for how good this number arrangement is.
+    Returns a tuple containing left rating, right rating and the total rating,
+    which is a simple measure for how good this number arrangement is.
     """
     left, right = rating_per_side(perm)
     total = left + right
@@ -141,18 +143,9 @@ def rating_per_side(perm):
 
 
 def rating_for_left_side(perm):
-    # value depends on how often a digit appears and which key position
+    # depends on how often a digit appears and in which key position
     return sum(LEFT_KEYS_POSITION_RATING[pos] * digit_frequency[d]  #
                for pos, d in enumerate(perm))
-
-
-def print_column_header():
-    print_columns("arrangment", "rating / side", "rating")
-    print()
-
-
-def print_columns(perm, balance, rating):
-    print(f"{perm:<14}{balance:<16}{rating:<16}")
 
 
 current_rating = rating_per_side_and_total(CURRENT)[2]
@@ -173,8 +166,14 @@ def print_perm_with_rating(perm, fmt=NUM_FMT):
     print_columns(perm, balance, rating_text)
 
 
+def print_columns(perm, balance, rating):
+    print(f"{perm:<14}{balance:<16}{rating:<16}")
+
+
 def print_header(text):
     print(f"\n\n{text}\n{'-' * len(text)}")
+    print_columns("arrangment", "rating / side", "rating")
+    print()
 
 
 def get_swaps(a, target=CURRENT):
@@ -239,9 +238,10 @@ def count_swaps(arrangement, target=CURRENT):
 
 # -----------------------------------------------------------------------------
 
+print_header("Current layout")
+print_perm_with_rating(CURRENT)
 
 print_header("Entered permutations")
-print_column_header()
 for ds in MANUAL_DIGIT_PERMUTATIONS:
     print_perm_with_rating(ds)
 
@@ -289,21 +289,16 @@ for p in permutations(digits):
             break
 
 print_header("Worst permutation")
-print_column_header()
 print_perm_with_rating(min_perm)
 
 print_header("Best permutations")
-print_column_header()
 for s, rating in max_permutations:
     print_perm_with_rating(s)
 
-print()
-print()
-print("Best where digits stay on their current side:")
+print_header("Best where digits stay on their current side")
 print_perm_with_rating(max_keep_sides_perm)
 
-print()
-print(f"Best with at most {MAX_N_SWAPS} swaps:")
+print_header(f"Best with at most {MAX_N_SWAPS} swaps")
 print_perm_with_rating(max_only_n_swaps_perm)
 
 how_swap = ", ".join(
