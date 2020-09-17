@@ -2,50 +2,6 @@ import sys
 from itertools import permutations
 from string import digits
 
-"""
-
-
-Entered permutations
---------------------
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 12345 67890 | (10.59, 7.42)  | 16.02 (current) | 
-| 45123 67089 | (11.95, 9.78)  | 19.33 (+20.67% compared to current) |
-| 54321 06789 | (11.36, 8.41)  | 17.58 (+9.78% compared to current) |
-| 42315 60897 | (11.82, 9.59)  | 19.05 (+18.92% compared to current) |
-
-
-Worst permutation
------------------
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 02431 68975 | (13.68, 4.81)  | 10.17 (-36.49% compared to current) |
-
-
-Best permutations
------------------
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 84126 73059 | (11.00, 11.25) | 22.19 (+38.54% compared to current) |
-| 95037 62148 | (11.25, 11.00) | 22.19 (+38.54% compared to current) |
-| 95037 61248 | (11.25, 10.97) | 22.16 (+38.34% compared to current) |
-| 97035 62148 | (11.22, 11.00) | 22.16 (+38.34% compared to current) |
-| 95037 82146 | (11.25, 10.95) | 22.14 (+38.22% compared to current) |
-
-
-Best where digits stay on their current side:
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 53124 86079 | (12.07, 9.84)  | 19.48 (+21.63% compared to current) |
-
-Best with at most 2 swaps (2 with 7, 8 with 0):
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 17345 62098 | (9.00, 11.71)  | 19.98 (+24.77% compared to current) |
- 
-
-
-"""
 
 # Tracks how comfortable and quick each key is to press (from pinky to the two
 # index finger rows). Even if all keys are in the home row, you might still
