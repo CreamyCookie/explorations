@@ -5,7 +5,7 @@ from string import digits
 # Tracks how comfortable and quick each key is to press (from pinky to the two
 # index finger rows). Even if all keys are in the home row, you might still
 # want to give your pinky less work and thus a lower value.
-LEFT_KEYS_POSITION_RATING = [0.55, 0.7, 1, 0.98, 0.8]
+LEFT_KEYS_POSITION_RATING = [0.55, 0.8, 1, 0.98, 0.72]
 
 # if this is 0, balance between left and right hand keys is ignored
 # if this is 1 the rating equals the smallest 'value' of both sides
