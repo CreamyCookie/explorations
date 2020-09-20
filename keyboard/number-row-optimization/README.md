@@ -46,13 +46,13 @@ Now that we got that covered, let's look at finding your best digit arrangement.
 # Optimization
 The [Python script](find_optimal_num_rows.py) I've written uses the previously mentioned digit distribution and several variables one can change to find the optimal arrangements. It does so by going through and rating every single one of the *10! = 3 628 800* permutations. On top of that it also rates the ones you've manually entered.
 
-The most important variable defines how comfortable, easy and fast you find each key to type on (for the left side). It has a default of `[0.55, 0.7, 1, 0.98, 0.8]`
+The most important variable defines how comfortable, easy and fast you find each key to type on (for the left side). It has a default of `[0.55, 0.8, 1, 0.98, 0.72]`
 
 Your values will likely be a lot less extreme if you use a separate layer for numbers with more optimal placements. But even then you might want to put less common digits on your pinkies.
 
 
 # Results
-The "penalty" in the following refers to the imbalance penalty, which is calculated using the difference between the average digit frequency of left and right.
+The "penalty" in the following refers to the imbalance penalty, which is calculated using the difference between the average digit frequency of left and right keys. It also depends on how high the `IMBALANCE_PENALTY_FACTOR` is.
 
 ## Current layout
 | arrangement | penalty | left  | right | total |
@@ -61,41 +61,41 @@ The "penalty" in the following refers to the imbalance penalty, which is calcula
 
 
 ## Worst permutation
-| arrangement | penalty | left  | right | total (change compared to current) |
-|-------------|---------|-------|-------|------------------------------------|
-| 02431 68975 | 7.0283  | 13.68 |  4.81 | 11.47 (-29.77%)                    |
+| arrangement | penalty | left  | right | total | change compared to current |
+|-------------|---------|-------|-------|-------|----------------------------|
+| 02431 68975 | 7.0283  | 13.68 |  4.81 | 11.47 | -29.77%                    |
 
 
 ## Best permutations
-| arrangement | penalty | left  | right | total (change compared to current) |
-|-------------|---------|-------|-------|------------------------------------|
-| 84126 73059 | 0.0532  | 11.00 |  11.25| 22.20 (+35.97%)                    |
-| 84216 73059 | 0.0532  | 10.97 |  11.25| 22.17 (+35.77%)                    |
-| 86124 73059 | 0.0531  | 10.96 |  11.25| 22.16 (+35.70%)                    |
-| 86214 73059 | 0.0531  | 10.92 |  11.25| 22.12 (+35.51%)                    |
-| 87036 52149 | 0.1129  | 11.12 |  11.11| 22.11 (+35.41%)                    |
+| arrangement | penalty | left  | right | total | change compared to current |
+|-------------|---------|-------|-------|-------|----------------------------|
+| 84126 73059 | 0.0532  | 11.00 |  11.25| 22.20 | +35.97%                    |
+| 84216 73059 | 0.0532  | 10.97 |  11.25| 22.17 | +35.77%                    |
+| 86124 73059 | 0.0531  | 10.96 |  11.25| 22.16 | +35.70%                    |
+| 86214 73059 | 0.0531  | 10.92 |  11.25| 22.12 | +35.51%                    |
+| 87036 52149 | 0.1129  | 11.12 |  11.11| 22.11 | +35.41%                    |
 
 
 ## Best where digits stay on their current side
-| arrangement | penalty | left  | right | total (change compared to current) |
-|-------------|---------|-------|-------|------------------------------------|
-| 53124 86079 | 2.0447  | 12.07 |  9.84 | 19.86 (+21.63%)                    |
+| arrangement | penalty | left  | right | total | change compared to current |
+|-------------|---------|-------|-------|-------|----------------------------|
+| 53124 86079 | 2.0447  | 12.07 |  9.84 | 19.86 | +21.63%                    |
 
 
 ## Best with at most two swaps
-| arrangement | penalty | left  | right | total (change compared to current) |
-|-------------|---------|-------|-------|------------------------------------|
-| 17345 62098 | 0.6055  | 9.00  |  11.71| 20.10 (+23.08%)                    |
+| arrangement | penalty | left  | right | total | change compared to current |
+|-------------|---------|-------|-------|-------|----------------------------|
+| 17345 62098 | 0.6055  | 9.00  |  11.71| 20.10 | +23.08%                    |
 
 (swap 2 with 7 and 8 with 0)
 
 
 ## Manually entered
-| arrangement | penalty | left  | right | total (change compared to current) |
-|-------------|---------|-------|-------|------------------------------------|
-| 45123 67089 | 2.0286  | 11.95 |  9.78 | 19.70 (+20.67%)                    |
-| 54321 06789 | 1.8455  | 11.36 |  8.41 | 17.92 (+9.78%)                     |
-| 43215 90678 | 2.0259  | 11.98 |  9.72 | 19.68 (+20.51%)                    |
+| arrangement | penalty | left  | right | total | change compared to current |
+|-------------|---------|-------|-------|-------|----------------------------|
+| 45123 67089 | 2.0286  | 11.95 |  9.78 | 19.70 | +20.67%                    |
+| 54321 06789 | 1.8455  | 11.36 |  8.41 | 17.92 | +9.78%                     |
+| 43215 90678 | 2.0259  | 11.98 |  9.72 | 19.68 | +20.51%                    |
 
 So, there you have it. While I mostly made this for fun, I'm considering to use `43215 90678` in my next layout.
 
