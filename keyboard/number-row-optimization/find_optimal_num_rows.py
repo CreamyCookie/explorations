@@ -8,6 +8,8 @@ from string import digits
 # want to give your pinky less work and thus a lower value.
 LEFT_KEYS_POSITION_RATING = [0.55, 0.8, 1, 0.98, 0.72]
 
+# Defines the maximum percentage that can be removed from total rating. The
+# actual value depends on how much the average frequency of each side differs.
 # If this is 0, balance between left and right hand keys is ignored.
 # If this is 1, the final rating will be 0 if all the digits with the highest
 # frequency are on the same side.
@@ -38,17 +40,15 @@ MANUAL_DIGIT_PERMUTATIONS = [
     # left side: rotate right twice, right side: move 0 in the middle
     '45123 67089',
 
-    # left side: reverse left and move 5 to end, right side: rotate right twice
-    #'43215 90678',
-
     # reverse left half and move 0 to before 6
     # relative simple change that's easy to remember and keeps numbers on their
     # side but muscle memory for every number but 3 needs to be retrained
     '54321 06789',
 
-    # switch 1 with 4 and 7 with 0 - pretty unintuitive change, but only 4 keys
-    # to relearn and numbers stay on their side
-    '42315 60897',
+    # left side: reverse left and move 5 to end, right side: rotate right twice
+    # or: highest digit on outer index key, rest increase outwards from there
+    # relative easy to remember easy and digits stay on current side
+    '43215 90678',
 ]
 # @formatter:on
 
@@ -105,12 +105,20 @@ for d, freq in digit_frequency.items():
 
 print(f'\nused digit frequency (normalized): {digit_frequency}')
 
-# We normalize to a total of 100
+# We normalize to a total of 100 to make things easier to read
 s = sum(LEFT_KEYS_POSITION_RATING) / 100
 LEFT_KEYS_POSITION_RATING = [i / s for i in LEFT_KEYS_POSITION_RATING]
 
 dfs = sorted(digit_frequency.values())
 max_frequency_delta_between_sides = sum(dfs[5:]) / 5 - sum(dfs[:5]) / 5
+
+
+class RatingResult:
+    def __init__(self, left, right, total, imbalance_penalty):
+        self.left = left
+        self.right = right
+        self.total = total
+        self.imbalance_penalty = imbalance_penalty
 
 
 def rating_per_side_and_total(perm):
@@ -124,8 +132,9 @@ def rating_per_side_and_total(perm):
     laf, raf = average_frequency_per_side(perm)
     norm_frequency_delta = abs(laf - raf) / max_frequency_delta_between_sides
     imbalance_penalty = total * norm_frequency_delta * IMBALANCE_PENALTY_FACTOR
+    total -= imbalance_penalty
 
-    return left, right, total - imbalance_penalty
+    return RatingResult(left, right, total, imbalance_penalty)
 
 
 def average_frequency_per_side(perm):
@@ -148,31 +157,45 @@ def rating_for_left_side(perm):
                for pos, d in enumerate(perm))
 
 
-current_rating = rating_per_side_and_total(CURRENT)[2]
+current_rating = rating_per_side_and_total(CURRENT).total
 
 
 def print_perm_with_rating(perm, fmt=NUM_FMT):
-    av, bv, rating = rating_per_side_and_total(perm)
-    improvement_percentage = 100 * ((rating / current_rating) - 1)
+    result = rating_per_side_and_total(perm)
+
+    improvement_percentage = 100 * ((result.total / current_rating) - 1)
     increase = ''
     if improvement_percentage != 0:
-        increase = f' ({improvement_percentage:+{fmt}}% compared to current)'
-    if perm == CURRENT:
-        increase = ' (current)'
+        increase = f' ({improvement_percentage:+{fmt}}%)'
 
-    balance = f"({av:{fmt}}, {bv:{fmt}})"
-    rating_text = f"{rating:{fmt}}{increase}"
+    left_text = f"{result.left:{fmt}}"
+    right_text = f" {result.right:{fmt}}"
+    total_text = f"{result.total:{fmt}}{increase}"
+    imbalance_penalty_text = f"{result.imbalance_penalty:.4f}"
 
-    print_columns(perm, balance, rating_text)
-
-
-def print_columns(perm, balance, rating):
-    print(f"{perm:<14}{balance:<16}{rating:<16}")
+    print_columns(perm, imbalance_penalty_text, left_text, right_text,
+                  total_text)
 
 
-def print_header(text):
+def print_columns(perm, imbalance_penalty, left, right, total):
+    print(f"{perm:<14}{imbalance_penalty:<10}"
+          f"{left:<8}{right:<8}{total:<16}")
+
+
+# uncomment if you want to create markdown tables
+# base_print_columns = print_columns
+# def print_columns(*args):
+#     base_print_columns(*[f"| {i}" for i in args])
+# print_columns("", "", "", "", "")
+
+
+def print_header(text, is_current=False):
     print(f"\n\n{text}\n{'-' * len(text)}")
-    print_columns("arrangment", "rating / side", "rating")
+    total = "total"
+    if not is_current:
+        total += " (change compared to current)"
+
+    print_columns("arrangement", "penalty", "left", "right", total)
     print()
 
 
@@ -238,7 +261,7 @@ def count_swaps(arrangement, target=CURRENT):
 
 # -----------------------------------------------------------------------------
 
-print_header("Current layout")
+print_header("Current layout", is_current=True)
 print_perm_with_rating(CURRENT)
 
 print_header("Entered permutations")
@@ -267,7 +290,7 @@ for p in permutations(digits):
 
     p = ''.join(p[:5]) + ' ' + ''.join(p[5:])
 
-    rating = rating_per_side_and_total(p)[2]
+    rating = rating_per_side_and_total(p).total
 
     if rating < min_perm_rating:
         min_perm_rating = rating

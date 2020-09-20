@@ -28,6 +28,10 @@ linux_character_counts = {  #
 # from this sanitized 5.8 GiB Wikipedia (de) corpus uploaded on 2019-06-27:
 # https://github.com/t-systems-on-site-services-gmbh/german-wikipedia-text-corpus
 # all characters with below 1000 were removed (mostly Chinese characters)
+#
+# The above corpus and the following dict is released under the
+# Creative Commons Attribution-ShareAlike 3.0 Unported license:
+# https://creativecommons.org/licenses/by-sa/3.0/
 wikipedia_de_corpus_counts = {  #
     ' ': 368434553, 'e': 300166342, 'n': 178603293, 'i': 151015223,
     'r': 144409194, 't': 114977063, 's': 108258400, 'a': 106152475,
@@ -84,6 +88,10 @@ wikipedia_de_corpus_counts = {  #
     'ш': 1001}
 
 # 6.4 GiB (compressed) corpus from https://github.com/aparrish/gutenberg-dammit
+#
+# The above corpus and the following dict is released under the
+# Creative Commons Attribution-ShareAlike 4.0 International license:
+# https://creativecommons.org/licenses/by-sa/4.0/
 gutenberg_dammit_counts = {  #
     ' ': 2969202277, 'e': 1707909140, 't': 1147642559, 'a': 1064145365,
     'o': 971665128, 'n': 948005230, 'i': 906858402, 's': 842394720,

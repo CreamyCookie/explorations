@@ -16,7 +16,7 @@ And again, this comes up a lot in all kinds of data (Wikipedia quote):
 
 One intuitive way I can think of for why it's true for numbers is this: A lot of text and code includes something that's akin to numbered lists. Some of these lists will end on 3, some on 701 and some on 41591878, but most of them will start with 0 or 1. Since that's the case but the higher numbers often aren't reached, it leads to 1 being more common than 2, 2 more common than 3, and so on.
 
-To be sure, I [checked three gigantic collections of texts](corpus_count.py): A selection from project Gutenberg (public domain library of books, 6.4 GiB compressed, plain text only), Wikipedia (5.8 GiB, de, sanitized) and all C files of the Linux kernel. 
+To be sure, I [checked three gigantic collections of texts](corpus_count.py): A selection from project Gutenberg (public domain library of books, 6.4 GiB compressed, plain text only), Wikipedia (5.8 GiB, de, sanitized) and all C files of the Linux kernel.
 
 Here you can see the plot: 
 
@@ -52,51 +52,57 @@ Your values will likely be a lot less extreme if you use a separate layer for nu
 
 
 # Results
+The "penalty" in the following refers to the imbalance penalty, which is calculated using the difference between the average digit frequency of left and right.
+
 ## Current layout
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 12345 67890 | (10.59, 7.42)  | 16.33 (current)                     |
+| arrangement | penalty | left  | right | total |
+|-------------|---------|-------|-------|-------|
+| 12345 67890 | 1.6811  | 10.59 |  7.42 | 16.33 |
+
 
 ## Worst permutation
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 02431 68975 | (13.68, 4.81)  | 11.47 (-29.77% compared to current) |
+| arrangement | penalty | left  | right | total (change compared to current) |
+|-------------|---------|-------|-------|------------------------------------|
+| 02431 68975 | 7.0283  | 13.68 |  4.81 | 11.47 (-29.77%)                    |
+
 
 ## Best permutations
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 84126 73059 | (11.00, 11.25) | 22.20 (+35.97% compared to current) |
-| 84216 73059 | (10.97, 11.25) | 22.17 (+35.77% compared to current) |
-| 86124 73059 | (10.96, 11.25) | 22.16 (+35.70% compared to current) |
-| 86214 73059 | (10.92, 11.25) | 22.12 (+35.51% compared to current) |
-| 87036 52149 | (11.12, 11.11) | 22.11 (+35.41% compared to current) |
+| arrangement | penalty | left  | right | total (change compared to current) |
+|-------------|---------|-------|-------|------------------------------------|
+| 84126 73059 | 0.0532  | 11.00 |  11.25| 22.20 (+35.97%)                    |
+| 84216 73059 | 0.0532  | 10.97 |  11.25| 22.17 (+35.77%)                    |
+| 86124 73059 | 0.0531  | 10.96 |  11.25| 22.16 (+35.70%)                    |
+| 86214 73059 | 0.0531  | 10.92 |  11.25| 22.12 (+35.51%)                    |
+| 87036 52149 | 0.1129  | 11.12 |  11.11| 22.11 (+35.41%)                    |
+
 
 ## Best where digits stay on their current side
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 53124 86079 | (12.07, 9.84)  | 19.86 (+21.63% compared to current) |
+| arrangement | penalty | left  | right | total (change compared to current) |
+|-------------|---------|-------|-------|------------------------------------|
+| 53124 86079 | 2.0447  | 12.07 |  9.84 | 19.86 (+21.63%)                    |
+
 
 ## Best with at most two swaps
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 17345 62098 | (9.00, 11.71)  | 20.10 (+23.08% compared to current) |
+| arrangement | penalty | left  | right | total (change compared to current) |
+|-------------|---------|-------|-------|------------------------------------|
+| 17345 62098 | 0.6055  | 9.00  |  11.71| 20.10 (+23.08%)                    |
 
 (swap 2 with 7 and 8 with 0)
 
+
 ## Manually entered
-| arrangement | rating / side  | rating                              |
-|-------------|----------------|-------------------------------------|
-| 45123 67089 | (11.95, 9.78)  | 19.70 (+20.67% compared to current) |
-| 54321 06789 | (11.36, 8.41)  | 17.92 (+9.78% compared to current)  |
-| 42315 60897 | (11.82, 9.59)  | 19.42 (+18.92% compared to current) |
+| arrangement | penalty | left  | right | total (change compared to current) |
+|-------------|---------|-------|-------|------------------------------------|
+| 45123 67089 | 2.0286  | 11.95 |  9.78 | 19.70 (+20.67%)                    |
+| 54321 06789 | 1.8455  | 11.36 |  8.41 | 17.92 (+9.78%)                     |
+| 43215 90678 | 2.0259  | 11.98 |  9.72 | 19.68 (+20.51%)                    |
 
-
-So, there you have it. While I mostly made this for fun, I'm considering to use one of these for my next layout.
+So, there you have it. While I mostly made this for fun, I'm considering to use `43215 90678` in my next layout.
 
 **Thank you very much for reading!**
 
 ---
 
-**TLDR**: Use `53124 86079` if you want numbers to stay on their side. Use `84126 73059` if you don't. Use `54321 06789` if you want an easy to remember change (reverse left side, move 0 right to 1). Use `17345 62098` if you only want to swap two digits (2 with 7 and 8 with 0) and still get about two thirds of the maximum benefits.
+**TLDR**: Use `53124 86079` if you want numbers to stay on their side. Use `84126 73059` if you want the absolute best rating. Use `54321 06789` if you want an easy to remember change (reverse left side, move 0 right to 1). Use `17345 62098` if you only want to swap two digits (2 with 7 and 8 with 0) and still get about two thirds of the maximum benefits.
 
 Of course, the best number arrangement will depend on your preferences and what you do most on your computer. So, if you're going for the best possible result, you probably need to modify a few of the parameters and run the script yourself.
