@@ -166,20 +166,22 @@ def print_perm_with_rating(perm, fmt=NUM_FMT):
     improvement_percentage = 100 * ((result.total / current_rating) - 1)
     increase = ''
     if improvement_percentage != 0:
-        increase = f' ({improvement_percentage:+{fmt}}%)'
+        increase = f'{improvement_percentage:+{fmt}}%'
 
     left_text = f"{result.left:{fmt}}"
-    right_text = f" {result.right:{fmt}}"
-    total_text = f"{result.total:{fmt}}{increase}"
+    right_text = f"{result.right:{fmt}}"
+    total_text = f"{result.total:{fmt}}"
     imbalance_penalty_text = f"{result.imbalance_penalty:.4f}"
 
     print_columns(perm, imbalance_penalty_text, left_text, right_text,
-                  total_text)
+                  total_text, increase)
 
 
-def print_columns(perm, imbalance_penalty, left, right, total):
-    print(f"{perm:<14}{imbalance_penalty:<10}"
-          f"{left:<8}{right:<8}{total:<16}")
+def print_columns(perm, imbalance_penalty, left, right, total, change):
+    if change:
+        change = f"   {change:>8}"
+    print(f"{perm:>14}{imbalance_penalty:>10}"
+          f"{left:>8}{right:>8}{total:>8}{change}")
 
 
 # uncomment if you want to create markdown tables
@@ -191,11 +193,12 @@ def print_columns(perm, imbalance_penalty, left, right, total):
 
 def print_header(text, is_current=False):
     print(f"\n\n{text}\n{'-' * len(text)}")
-    total = "total"
-    if not is_current:
-        total += " (change compared to current)"
 
-    print_columns("arrangement", "penalty", "left", "right", total)
+    change = ''
+    if not is_current:
+        change = "change compared to current"
+
+    print_columns("arrangement", "penalty", "left", "right", "total", change)
     print()
 
 
