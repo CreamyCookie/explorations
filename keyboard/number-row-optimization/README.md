@@ -90,6 +90,14 @@ The "penalty" in the following refers to the imbalance penalty, which is calcula
 (swap 2 with 7 and 8 with 0)
 
 
+## Best with at most three swaps
+| arrangement | penalty | left  | right | total | change from current |
+|-------------|--------:|------:|------:|------:|--------------------:|
+| 72145 63098 | 0.4341  | 11.01 |  10.92| 21.50 | +31.67%             |
+ 
+(swap 1 with 7, 1 with 3 and 8 with 0)
+
+
 ## Manually entered
 | arrangement | penalty | left  | right | total | change from current |
 |-------------|--------:|------:|------:|------:|--------------------:|

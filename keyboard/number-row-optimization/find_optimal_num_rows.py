@@ -122,10 +122,6 @@ class RatingResult:
 
 
 def rating_per_side_and_total(perm):
-    """
-    Returns a tuple containing left rating, right rating and the total rating,
-    which is a simple measure for how good this number arrangement is.
-    """
     left, right = rating_per_side(perm)
     total = left + right
 
@@ -196,7 +192,7 @@ def print_header(text, is_current=False):
 
     change = ''
     if not is_current:
-        change = "change compared to current"
+        change = "change from current"
 
     print_columns("arrangement", "penalty", "left", "right", "total", change)
     print()
