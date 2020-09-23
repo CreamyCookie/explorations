@@ -180,7 +180,7 @@ def print_perm_with_rating(perm, fmt=NUM_FMT):
 def print_columns(perm, imbalance_penalty, left, right, total, change):
     if change:
         change = f"   {change:>8}"
-    print(f"{perm:>14}{imbalance_penalty:>10}"
+    print(f"{perm}{imbalance_penalty:>10}"
           f"{left:>8}{right:>8}{total:>8}{change}")
 
 
@@ -217,7 +217,7 @@ def get_swaps(a, target=CURRENT):
             n += 1
         else:
             arr[cn], arr[n] = arr[n], arr[cn]
-            swaps.append((arr[n], arr[cn]))
+            swaps.append((target[n], target[cn]))
     return swaps
 
 
