@@ -8,6 +8,9 @@ from string import digits
 # want to give your pinky less work and thus a lower value.
 LEFT_KEYS_POSITION_RATING = [0.55, 0.8, 1, 0.98, 0.72]
 
+# By default, the same ratings are mirrored for the right side.
+RIGHT_KEYS_POSITION_RATING = LEFT_KEYS_POSITION_RATING[::-1]
+
 # Defines the maximum percentage that can be removed from total rating. The
 # actual value depends on how much the average frequency of each side differs.
 # If this is 0, balance between left and right hand keys is ignored.
@@ -29,7 +32,7 @@ RW_0_FREQ = 0.134418127182388
 
 # I'd recommend against enabling this, as Wikipedia and Gutenberg both are
 # biased by, among others, how much data there is for certain years (1800-1999)
-# Similarly, I'd leave the ZIPF_FACTOR > 0.5 if you code regularly.
+# Similarly, I'd not set the ZIPF_FACTOR to below 0.4 if you program regularly.
 USE_REAL_WORLD_AVERAGE = False
 
 CURRENT = '12345 67890'
@@ -47,7 +50,7 @@ MANUAL_DIGIT_PERMUTATIONS = [
 
     # left side: reverse left and move 5 to end, right side: rotate right twice
     # or: highest digit on outer index key, rest increase outwards from there
-    # relative easy to remember easy and digits stay on current side
+    # relatively easy to remember and digits stay on current side
     '43215 90678',
 ]
 # @formatter:on
@@ -61,7 +64,21 @@ MAX_N_SWAPS = 2
 
 NUM_FMT = '.2f'
 
+
 # -----------------------------------------------------------------------------
+
+
+def normalize(items, target_sum=1):
+    s = sum(items) / target_sum
+    for n in range(len(items)):
+        items[n] = items[n] / s
+
+
+def normalize_dict_values(mapping, target_sum=1):
+    s = sum(mapping.values()) / target_sum
+
+    for k, v in mapping.items():
+        mapping[k] = v / s
 
 
 digit_frequency = {d: 1 / (n + 1) for n, d in enumerate(digits)}
@@ -98,16 +115,13 @@ else:
 
 print(f'\nused digit frequency: {digit_frequency}')
 
-# normalize
-s = sum(digit_frequency.values())
-for d, freq in digit_frequency.items():
-    digit_frequency[d] = freq / s
+normalize_dict_values(digit_frequency)
 
 print(f'\nused digit frequency (normalized): {digit_frequency}')
 
 # We normalize to a total of 100 to make things easier to read
-s = sum(LEFT_KEYS_POSITION_RATING) / 100
-LEFT_KEYS_POSITION_RATING = [i / s for i in LEFT_KEYS_POSITION_RATING]
+normalize(LEFT_KEYS_POSITION_RATING, 100)
+normalize(RIGHT_KEYS_POSITION_RATING, 100)
 
 dfs = sorted(digit_frequency.values())
 max_frequency_delta_between_sides = sum(dfs[5:]) / 5 - sum(dfs[:5]) / 5
@@ -144,13 +158,16 @@ def average_frequency_of_side(perm):
 
 def rating_per_side(perm):
     left, right = perm.split()
-    return rating_for_left_side(left), rating_for_left_side(right[::-1])
+
+    left_rating = rating_for_one_side(left, LEFT_KEYS_POSITION_RATING)
+    right_rating = rating_for_one_side(right, RIGHT_KEYS_POSITION_RATING)
+
+    return left_rating, right_rating
 
 
-def rating_for_left_side(perm):
+def rating_for_one_side(perm, rating):
     # depends on how often a digit appears and in which key position
-    return sum(LEFT_KEYS_POSITION_RATING[pos] * digit_frequency[d]  #
-               for pos, d in enumerate(perm))
+    return sum(rating[pos] * digit_frequency[d] for pos, d in enumerate(perm))
 
 
 current_rating = rating_per_side_and_total(CURRENT).total
