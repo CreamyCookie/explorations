@@ -36,13 +36,9 @@ RW_0_FREQ = 0.134418127182388
 USE_REAL_WORLD_AVERAGE = False
 
 CURRENT = '12345 67890'
-LEFT = CURRENT[:5]
 
 # @formatter:off
 MANUAL_DIGIT_PERMUTATIONS = [
-    # left side: rotate right twice, right side: move 0 in the middle
-    '45123 67089',
-
     # reverse left half and move 0 to before 6
     # relative simple change that's easy to remember and keeps numbers on their
     # side but muscle memory for every number but 3 needs to be retrained
@@ -52,6 +48,9 @@ MANUAL_DIGIT_PERMUTATIONS = [
     # or: highest digit on outer index key, rest increase outwards from there
     # relatively easy to remember and digits stay on current side
     '43215 90678',
+
+    # swap 1 with 7, 1 with 3 and 8 with 0 - only 5 keys to relearn
+    '72145 63098',
 ]
 # @formatter:on
 
@@ -66,6 +65,9 @@ NUM_FMT = '.2f'
 
 
 # -----------------------------------------------------------------------------
+
+LEFT = CURRENT[:5]
+RIGHT = CURRENT[6:]
 
 
 def normalize(items, target_sum=1):
