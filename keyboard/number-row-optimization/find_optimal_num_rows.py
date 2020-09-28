@@ -344,9 +344,9 @@ print_perm_with_rating(best_keep_sides_perm)
 print_header(f"Best with at most {MAX_N_SWAPS} swaps")
 print_perm_with_rating(best_n_swaps_perm)
 
-print_header(f"Best balance")
-print_perm_with_rating(most_balanced_perm)
-
 swaps = [f'{a} with {b}' for a, b in get_swaps(best_n_swaps_perm)]
 
 print(f"({', '.join(swaps[:-1])} and {swaps[-1]})")
+
+print_header(f"Best balance")
+print_perm_with_rating(most_balanced_perm)
