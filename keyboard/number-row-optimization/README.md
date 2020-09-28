@@ -98,7 +98,7 @@ The "penalty" in the following refers to the imbalance penalty, which is calcula
 (swap 1 with 8, 2 with 7 and 4 with 0)
 
 
-# Best, most balanced
+## Best, most balanced
 | arrangement | penalty | left  | right | total | change from current |
 |-------------|--------:|------:|------:|------:|--------------------:|
 | 75046 91238 | 0.04000 | 11.04 | 11.06 | 22.05 | +35.08%             |
