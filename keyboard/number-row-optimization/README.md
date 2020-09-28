@@ -95,7 +95,7 @@ The "penalty" in the following refers to the imbalance penalty, which is calcula
 |-------------|--------:|------:|------:|------:|--------------------:|
 | 87305 62194 | 0.19565 | 11.20 | 10.70 | 21.71 | +32.97%             |
  
-(swap 1 with 7, 1 with 3 and 8 with 0)
+(swap 1 with 8, 2 with 7 and 4 with 0)
 
 
 # Best, most balanced
