@@ -300,10 +300,6 @@ min_perm_rating = float("inf")
 
 # 10! / 2 = 1 814 400 - will take a bit
 for p in permutations(digits):
-    # ignore reversed duplicates
-    if p >= p[::-1]:
-        continue
-
     p = ''.join(p[:5]) + ' ' + ''.join(p[5:])
 
     rating = rating_per_side_and_total(p).total
