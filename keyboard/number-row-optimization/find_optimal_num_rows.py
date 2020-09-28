@@ -351,7 +351,7 @@ print_perm_with_rating(best_n_swaps_perm)
 
 swaps = [f'{a} with {b}' for a, b in get_swaps(best_n_swaps_perm)]
 
-print(f"({', '.join(swaps[:-1])} and {swaps[-1]})")
+print(f"\n(swap {', '.join(swaps[:-1])} and {swaps[-1]})")
 
 print_header(f"Best, most balanced")
 print_perm_with_rating(most_balanced_perm)
