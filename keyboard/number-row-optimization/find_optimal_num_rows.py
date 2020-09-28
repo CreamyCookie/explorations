@@ -300,7 +300,7 @@ worst_perm_rating = float("inf")
 
 most_balanced_perm = None
 most_balanced_perm_rating = 0
-most_balanced_imbalance_penalty = float("inf")
+most_balanced_imbalance_penalty_factor = float("inf")
 
 # 10! / 2 = 1 814 400 - will take a bit
 for p in permutations(digits):
@@ -308,14 +308,6 @@ for p in permutations(digits):
 
     result = rating_per_side_and_total(p)
     rating = result.total
-
-    if result.imbalance_penalty <= most_balanced_imbalance_penalty:
-        # there will be many "most balanced" permutations with same rating,
-        # since the imbalance penalty does not consider positions, only sides
-        if rating > most_balanced_perm_rating:
-            most_balanced_imbalance_penalty = result.imbalance_penalty
-            most_balanced_perm = p
-            most_balanced_perm_rating = rating
 
     if rating < worst_perm_rating:
         worst_perm_rating = rating
@@ -335,6 +327,17 @@ for p in permutations(digits):
         if cur[1] < rating:
             best_permutations[i] = (p, rating)
             break
+
+    imbalance_penalty = result.imbalance_penalty
+    rating_without_imbalance_penalty = rating - imbalance_penalty
+    imbalance_penalty_factor = imbalance_penalty / rating
+    if imbalance_penalty_factor <= most_balanced_imbalance_penalty_factor:
+        # there will be many "most balanced" permutations with the same rating,
+        # since the imbalance penalty does not consider positions, only sides
+        if rating_without_imbalance_penalty > most_balanced_perm_rating:
+            most_balanced_imbalance_penalty_factor = imbalance_penalty_factor
+            most_balanced_perm = p
+            most_balanced_perm_rating = rating_without_imbalance_penalty
 
 print_header("Worst permutation")
 print_perm_with_rating(worst_perm)
