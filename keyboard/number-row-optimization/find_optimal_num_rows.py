@@ -184,7 +184,7 @@ def print_perm_with_rating(perm, fmt=NUM_FMT):
     left_text = f"{result.left:{fmt}}"
     right_text = f"{result.right:{fmt}}"
     total_text = f"{result.total:{fmt}}"
-    imbalance_penalty_text = f"{result.imbalance_penalty:.4f}"
+    imbalance_penalty_text = f"{result.imbalance_penalty:.5f}"
 
     print_columns(perm, imbalance_penalty_text, left_text, right_text,
                   total_text, increase)
@@ -192,7 +192,7 @@ def print_perm_with_rating(perm, fmt=NUM_FMT):
 
 def print_columns(perm, imbalance_penalty, left, right, total, change):
     if change:
-        change = f"   {change:>8}"
+        change = f"    {change}"
     print(f"{perm}{imbalance_penalty:>10}"
           f"{left:>8}{right:>8}{total:>8}{change}")
 
