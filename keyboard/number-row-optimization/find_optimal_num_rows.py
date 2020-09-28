@@ -57,7 +57,7 @@ MANUAL_DIGIT_PERMUTATIONS = [
 
 CHECK_ALL_PERMUTATIONS = True
 
-MAX_PERMUTATIONS_COUNT = 10
+BEST_PERMUTATIONS_COUNT = 10
 
 # to find the best arrangement with at most this many swaps
 MAX_N_SWAPS = 2
@@ -287,16 +287,16 @@ for ds in MANUAL_DIGIT_PERMUTATIONS:
 if not CHECK_ALL_PERMUTATIONS:
     sys.exit()
 
-max_permutations = [('', 0) for _ in range(MAX_PERMUTATIONS_COUNT)]
+best_permutations = [('', 0) for _ in range(BEST_PERMUTATIONS_COUNT)]
 
-max_keep_sides_perm = None
-max_keep_sides_perm_rating = 0
+best_keep_sides_perm = None
+best_keep_sides_perm_rating = 0
 
-max_only_n_swaps_perm = None
-max_only_n_swaps_perm_rating = 0
+best_n_swaps_perm = None
+best_n_swaps_perm_rating = 0
 
-min_perm = None
-min_perm_rating = float("inf")
+worst_perm = None
+worst_perm_rating = float("inf")
 
 most_balanced_perm = None
 most_balanced_imbalance_penalty = float("inf")
@@ -312,37 +312,37 @@ for p in permutations(digits):
         most_balanced_imbalance_penalty = result.imbalance_penalty
         most_balanced_perm = p
 
-    if rating < min_perm_rating:
-        min_perm_rating = rating
-        min_perm = p
+    if rating < worst_perm_rating:
+        worst_perm_rating = rating
+        worst_perm = p
 
-    if rating > max_only_n_swaps_perm_rating and count_swaps(p) <= MAX_N_SWAPS:
-        max_only_n_swaps_perm_rating = rating
-        max_only_n_swaps_perm = p
+    if rating > best_n_swaps_perm_rating and count_swaps(p) <= MAX_N_SWAPS:
+        best_n_swaps_perm_rating = rating
+        best_n_swaps_perm = p
 
-    if rating > max_keep_sides_perm_rating and all(d in p[:5] for d in LEFT):
-        max_keep_sides_perm_rating = rating
-        max_keep_sides_perm = p
+    if rating > best_keep_sides_perm_rating and all(d in p[:5] for d in LEFT):
+        best_keep_sides_perm_rating = rating
+        best_keep_sides_perm = p
 
-    for i in range(MAX_PERMUTATIONS_COUNT):
-        cur = max_permutations[i]
+    for i in range(BEST_PERMUTATIONS_COUNT):
+        cur = best_permutations[i]
 
         if cur[1] < rating:
-            max_permutations[i] = (p, rating)
+            best_permutations[i] = (p, rating)
             break
 
 print_header("Worst permutation")
-print_perm_with_rating(min_perm)
+print_perm_with_rating(worst_perm)
 
 print_header("Best permutations")
-for s, rating in max_permutations:
+for s, rating in best_permutations:
     print_perm_with_rating(s)
 
 print_header("Best where digits stay on their current side")
-print_perm_with_rating(max_keep_sides_perm)
+print_perm_with_rating(best_keep_sides_perm)
 
 print_header(f"Best with at most {MAX_N_SWAPS} swaps")
-print_perm_with_rating(max_only_n_swaps_perm)
+print_perm_with_rating(best_n_swaps_perm)
 
 print_header(f"Best balance")
 print_perm_with_rating(most_balanced_perm)
