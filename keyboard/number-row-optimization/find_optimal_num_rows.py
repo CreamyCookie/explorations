@@ -1,6 +1,10 @@
+import math
 import sys
 from itertools import permutations
 from string import digits
+
+
+# Needs at least Python 3.5
 
 
 # Tracks how comfortable and quick each key is to press (from pinky to the two
@@ -62,7 +66,6 @@ BEST_PERMUTATIONS_COUNT = 10
 MAX_N_SWAPS = 2
 
 NUM_FMT = '.2f'
-
 
 # -----------------------------------------------------------------------------
 
@@ -277,6 +280,40 @@ def count_swaps(arrangement, target=CURRENT):
     return swaps
 
 
+def update_to_steadier_if_rating_equal(permutations_with_rating):
+    for i, (p, p_rating) in enumerate(permutations_with_rating):
+        p_mirrored = p[::-1]
+        p_mirrored_rating = rating_per_side_and_total(p_mirrored).total
+
+        if math.isclose(p_rating, p_mirrored_rating):
+            # mirrored version with same rating exists
+            p_score = steadiness_score(p)
+            p_mirrored_score = steadiness_score(p_mirrored)
+
+            if p_score < p_mirrored_score:
+                permutations_with_rating[i] = (p_mirrored, p_mirrored_rating)
+
+
+def steadiness_score(perm):
+    """
+    Returns a score that depends on how many digits stay on their current side
+    and how many digits stay in the same position (easier to learn if more).
+    """
+    # -1 to account for the space
+    exact_same_position_count = -1
+
+    for pc, cc in zip(perm, CURRENT):
+        if pc == cc:
+            exact_same_position_count += 1
+
+    # it's more important that frequent digits stay on the same side
+    same_side_score = sum(digit_frequency[pc] for pc in perm[:5] if pc in LEFT)
+    same_side_score += sum(
+            digit_frequency[pc] for pc in perm[6:] if pc in RIGHT)
+
+    return exact_same_position_count + same_side_score * 2
+
+
 # -----------------------------------------------------------------------------
 
 print_header("Current layout", is_current=True)
@@ -345,7 +382,8 @@ print_header("Worst permutation")
 print_perm_with_rating(worst_perm)
 
 print_header("Best permutations")
-for s, rating in best_permutations:
+update_to_steadier_if_rating_equal(best_permutations)
+for s, _ in best_permutations:
     print_perm_with_rating(s)
 
 print_header("Best where digits stay on their current side")
