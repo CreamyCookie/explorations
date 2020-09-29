@@ -280,7 +280,7 @@ def count_swaps(arrangement, target=CURRENT):
     return swaps
 
 
-def update_to_steadier_if_rating_equal(permutations_with_rating):
+def update_to_mirror_if_rating_equal_and_steadier(permutations_with_rating):
     for i, (p, p_rating) in enumerate(permutations_with_rating):
         p_mirrored = p[::-1]
         p_mirrored_rating = rating_per_side_and_total(p_mirrored).total
@@ -341,7 +341,7 @@ most_balanced_perm = None
 most_balanced_perm_rating = 0
 most_balanced_imbalance_penalty_factor = float("inf")
 
-# 10! / 2 = 1 814 400 - will take a bit
+# 10! = 3 628 800 - will take a bit
 for p in permutations(digits):
     p = ''.join(p[:5]) + ' ' + ''.join(p[5:])
 
@@ -382,7 +382,7 @@ print_header("Worst permutation")
 print_perm_with_rating(worst_perm)
 
 print_header("Best permutations")
-update_to_steadier_if_rating_equal(best_permutations)
+update_to_mirror_if_rating_equal_and_steadier(best_permutations)
 for s, _ in best_permutations:
     print_perm_with_rating(s)
 
