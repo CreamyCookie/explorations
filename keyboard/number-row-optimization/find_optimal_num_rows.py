@@ -15,7 +15,7 @@ LEFT_KEYS_POSITION_RATING = [0.55, 0.8, 1, 0.98, 0.72]
 # By default, the same ratings are mirrored for the right side.
 RIGHT_KEYS_POSITION_RATING = LEFT_KEYS_POSITION_RATING[::-1]
 
-# Defines the maximum percentage that can be removed from total rating. The
+# Defines the maximum percentage that can be removed from the rating. The
 # actual value depends on how much the average frequency of each side differs.
 # If this is 0, balance between left and right hand keys is ignored.
 # If this is 1, the final rating will be 0 if all the digits with the highest
@@ -396,5 +396,5 @@ swaps = [f'{a} with {b}' for a, b in get_swaps(best_n_swaps_perm)]
 
 print(f"\n(swap {', '.join(swaps[:-1])} and {swaps[-1]})")
 
-print_header(f"Best, most balanced")
+print_header(f"Best of the most balanced")
 print_perm_with_rating(most_balanced_perm)

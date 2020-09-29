@@ -2,6 +2,8 @@
 
 **Estimated reading time:** 5 minutes
 
+*For those of you who prefer a number row to a numpad (on a layer or not).*
+
 # Optimization potential
 
 What's there to optimize? Ignoring some special cases, aren't all 10 digits used approximately equally?
@@ -40,19 +42,19 @@ Obviously, changing the number row is of no use if it makes your life harder (af
 
 If any of these premises doesn't hold true for you, then changing the number row provides no benefits.
 
-Now that we got that covered, let's look at finding your best digit arrangement. 
+Now that we got that covered, let's look at finding a good digit arrangement. 
  
 
 # Optimization
 The [Python script](find_optimal_num_rows.py) I've written uses the previously mentioned digit distribution and several variables one can change to find the optimal arrangements. It does so by going through and rating every single one of the *10! = 3 628 800* permutations. On top of that it also rates the ones you've manually entered.
 
-The most important variable defines how comfortable, easy and fast you find each key to type on (for the left side). It has a default of `[0.55, 0.8, 1, 0.98, 0.72]`
+Possibly the most important variable defines how comfortable, easy and fast you find each key to type on. It has a default of `[0.55, 0.8, 1, 0.98, 0.72]` for the left side. By default the right side simply mirrors the left one, but you can choose different preferences for your right hand if you want.
 
 Your values will likely be a lot less extreme if you use a separate layer for numbers with more optimal placements. But even then you might want to put less common digits on your pinkies.
 
 
 # Results
-The "penalty" in the following refers to the imbalance penalty, which is calculated using the difference between the average digit frequency of left and right keys. It also depends on how high the `IMBALANCE_PENALTY_FACTOR` is.
+The "penalty" in the following refers to the imbalance penalty, which is calculated using the difference between the average digit frequency of left and right keys. It also depends on how high the `IMBALANCE_PENALTY_FACTOR` is. In short, we want to avoid layouts where one hand has far more to do than the other.
 
 ## Current layout
 | arrangement | penalty | left  | right | total |
@@ -98,7 +100,7 @@ The "penalty" in the following refers to the imbalance penalty, which is calcula
 (swap 1 with 8, 2 with 7 and 4 with 0)
 
 
-## Best, most balanced
+## Best of the most balanced
 | arrangement | penalty | left  | right | total | change from current |
 |-------------|--------:|------:|------:|------:|--------------------:|
 | 75046 91238 | 0.04000 | 11.04 | 11.06 | 22.05 | +35.08%             |
@@ -111,12 +113,21 @@ The "penalty" in the following refers to the imbalance penalty, which is calcula
 | 43215 90678 | 2.02587 | 11.98 |  9.72 | 19.68 | +20.51%             |
 | 72145 63098 | 0.43408 | 11.01 | 10.92 | 21.50 | +31.67%             |
 
-So, there you have it. While I mostly made this for fun, I'm considering to use `43215 90678` in my next layout.
+
+Explanations for why these layouts were entered:
+
+* `54321 06789` - You only need to reverse the left half and move `0` to before `6`, which is easy to remember. Numbers stay on their current side (useful for games and programs where you have your other hand on the mouse or trackball).
+
+* `43215 90678` - Numbers stay on their side. Put the highest digit on the outer index key (which currently has `5` and `6`). The remaining digits are simply placed in ascending order outwards from these keys. To me, that seems pretty memorable.
+
+* `72145 63098` - This one was actually found in an earlier run of the script. Swap `1` with `7`, `1` with `3` and `8` with `0`. Only five keys to relearn but comes pretty close to the best layouts.
+
+So, there you have it. While I mostly made this for fun, I'm considering to use `43215 90678` given the above reasons and since it still achieves 57% of the maximum improvements (and much more, if you consider balance less important).
 
 **Thank you very much for reading!**
 
 ---
 
-**TLDR**: Use `53124 86079` if you want numbers to stay on their side. Use `84126 73059` if you want the absolute best rating. Use `54321 06789` if you want an easy to remember change (reverse left side, move 0 right to 1). Use `17345 62098` if you only want to swap two digits (2 with 7 and 8 with 0) and still get about two thirds of the maximum benefits.
+**TLDR**: Use `53124 86079` if you want numbers to stay on their side. Use `95037 62148` if you want the absolute best rating. Use `17345 62098` if you only want to swap two digits (2 with 7 and 8 with 0) and still get about two thirds of the maximum benefits. Use `43215 90678` if you want an easy to remember change (digits stay on their side, highest on center, rest in increasing order towards pinkies).
 
 Of course, the best number arrangement will depend on your preferences and what you do most on your computer. So, if you're going for the best possible result, you probably need to modify a few of the parameters and run the script yourself.
