@@ -116,7 +116,7 @@ The "penalty" in the following refers to the imbalance penalty, which is calcula
 
 Explanations for why these layouts were entered:
 
-* `54321 06789` - You only need to reverse the left half and move `0` to before `6`, which is easy to remember. Numbers stay on their current side, which is useful for games and programs where you have your other hand on a mouse or trackball.
+* `54321 06789` - You only need to reverse the left half and move `0` to before `6`, which is easy to remember. Numbers stay on their current side, which is useful for many games and programs where you have your other hand on a mouse or trackball.
 
 * `43215 90678` - Numbers stay on their side. Put the highest digit on the outer index key (which currently has `5` and `6`). The remaining digits are simply placed in ascending order outwards from these keys. To me, that seems pretty memorable.
 
