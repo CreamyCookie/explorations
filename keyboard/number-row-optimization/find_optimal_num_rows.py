@@ -73,8 +73,13 @@ LEFT = CURRENT[:5]
 RIGHT = CURRENT[6:]
 
 
-def normalize(items, target_sum=1):
-    s = sum(items) / target_sum
+def normalize_both(items_1, items_2, target_sum=1):
+    s = (sum(items_1) + sum(items_2)) / target_sum
+    divide_all_by(items_1, s)
+    divide_all_by(items_2, s)
+
+
+def divide_all_by(items, s):
     for n in range(len(items)):
         items[n] = items[n] / s
 
@@ -124,9 +129,8 @@ normalize_dict_values(digit_frequency)
 
 print(f'\nused digit frequency (normalized): {digit_frequency}')
 
-# We normalize to a total of 100 to make things easier to read
-normalize(LEFT_KEYS_POSITION_RATING, 100)
-normalize(RIGHT_KEYS_POSITION_RATING, 100)
+# We normalize to a total of 200 to make things easier to read
+normalize_both(LEFT_KEYS_POSITION_RATING, RIGHT_KEYS_POSITION_RATING, 200)
 
 dfs = sorted(digit_frequency.values())
 max_frequency_delta_between_sides = sum(dfs[5:]) / 5 - sum(dfs[:5]) / 5
@@ -345,7 +349,8 @@ most_balanced_perm = None
 most_balanced_perm_rating = 0
 most_balanced_imbalance_penalty_factor = float("inf")
 
-# 10! = 3 628 800 - will take a bit
+print("\n\nChecking 10! = 3 628 800 permutations. This will take a bit.\n\n")
+
 for p in permutations(digits):
     p = ''.join(p[:5]) + ' ' + ''.join(p[5:])
 
