@@ -320,7 +320,11 @@ print_header("Current layout", is_current=True)
 print_perm_with_rating(CURRENT)
 
 print_header("Entered permutations")
+cur_characters = set(CURRENT)
 for ds in MANUAL_DIGIT_PERMUTATIONS:
+    if set(ds) != cur_characters:
+        raise ValueError(f"{ds} contains different, less or more characters "
+                         f"than CURRENT")
     print_perm_with_rating(ds)
 
 if not CHECK_ALL_PERMUTATIONS:
